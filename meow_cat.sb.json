@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "actions": [
+    {
+      "guid": "b5c8e72d-3fa9-4c62-a2b2-839e0c1f4c11",
+      "name": "Meow Cat",
+      "description": "Мяукает кот на стриме",
+      "triggers": [
+        {
+          "type": "Twitch Chat Command",
+          "command": "!мяу",
+          "caseSensitive": false,
+          "enabled": true
+        }
+      ],
+      "subActions": [
+        {
+          "id": 1,
+          "type": "Websocket - Send",
+          "enabled": true,
+          "description": "Send meow command",
+          "parameters": {
+            "url": "ws://localhost:8080",
+            "message": "{\"command\": \"meow\"}"
+          }
+        }
+      ]
+    }
+  ]
+}
