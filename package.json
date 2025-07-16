@@ -1,4 +1,10 @@
 {
+  "name": "minichat_cat",
+  "version": "1.0.0",
+  "main": "index.html",
+  "scripts": {
+    "start": "node index.html"
+  },
   "dependencies": {
     "tmi.js": "^1.8.5",
     "ws": "^8.18.3"
