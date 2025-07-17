@@ -129,6 +129,19 @@
       .eye.right {
         right: 30px;
       }
+      .eyelid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #111;
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        z-index: 10;
+      }
       .pupil {
         position: absolute;
         top: 10px;
@@ -194,8 +207,14 @@
       <div class="head">
         <div class="ear left"></div>
         <div class="ear right"></div>
-        <div class="eye left"><div class="pupil" id="pupilLeft"></div></div>
-        <div class="eye right"><div class="pupil" id="pupilRight"></div></div>
+        <div class="eye left">
+          <div class="eyelid"></div>
+          <div class="pupil" id="pupilLeft"></div>
+        </div>
+        <div class="eye right">
+          <div class="eyelid"></div>
+          <div class="pupil" id="pupilRight"></div>
+        </div>
       </div>
       <div class="paw front-left"></div>
       <div class="paw front-right"></div>
@@ -205,32 +224,38 @@
     <div class="speech" id="speech">Жду сообщений...</div>
 
     <script>
-      const socket = new WebSocket("wss://minichat-cat-js-4.onrender.com"); // Подключение к серверу
+      const socket = new WebSocket("wss://minichat-cat-js-4.onrender.com");
       const pupilLeft = document.getElementById("pupilLeft");
       const pupilRight = document.getElementById("pupilRight");
       const speechDiv = document.getElementById("speech");
 
-      /*
-      function speak(text) {
-        const ut = new SpeechSynthesisUtterance(text);
-        ut.lang = "ru-RU";
-        ut.pitch = 1.8;
-        ut.rate = 1.1;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(ut);
-        speechDiv.textContent = text;
-      }
-      */
-
-      // Обработка сообщений от сервера
       socket.addEventListener("message", (event) => {
         const data = JSON.parse(event.data);
         const combined = `${data.user} говорит: ${data.message}`;
-        // speak(combined);
-        speechDiv.textContent = combined; // Показываем сообщение без озвучки
+        speechDiv.textContent = combined;
+
+        setTimeout(() => {
+          if (speechDiv.textContent === combined) {
+            speechDiv.textContent = "Жду сообщений...";
+          }
+        }, 20000);
       });
 
-      // Поворот зрачков
+      function blink() {
+        const eyelids = document.querySelectorAll(".eyelid");
+        // Закрываем глаза
+        eyelids.forEach((el) => (el.style.opacity = "1"));
+        // Через 200ms открываем глаза
+        setTimeout(() => {
+          eyelids.forEach((el) => (el.style.opacity = "0"));
+        }, 200);
+      }
+
+      // Моргаем каждые 3–7 секунд (случайно)
+      setInterval(() => {
+        blink();
+      }, 3000 + Math.random() * 4000);
+
       document.addEventListener("mousemove", (e) => {
         const rect = document.getElementById("cat").getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
