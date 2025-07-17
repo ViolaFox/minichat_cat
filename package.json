@@ -3,7 +3,17 @@
   "version": "1.0.0",
   "main": "index.html",
   "dependencies": {
+    "express": "^5.1.0",
+    "googleapis": "^153.0.0",
+    "open": "^10.2.0",
     "tmi.js": "^1.8.5",
     "ws": "^8.18.3"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
